@@ -104,5 +104,5 @@ test(x_self_test, y_self_test, w)
 
 
 ####################################
-# test hyper-parameter
+# test all the hyper-parameter
 ####################################
