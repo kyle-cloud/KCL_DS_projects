@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn import model_selection
 from sklearn import datasets
 
+
 ####################################
 # Load Data
 ####################################
@@ -15,12 +16,14 @@ x = x.fillna(x.mean()).values.reshape(-1, 1)
 y = y.fillna(y.mean()).values.reshape(-1, 1)
 x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.1)
 
+
 ####################################
 # change data
 ####################################
 x_self, y_self, p = datasets.make_regression(n_samples=100, n_features=1, n_informative=1, noise=10, coef=True)
 y_self = y_self.reshape(-1, 1)
 x_self_train, x_self_test, y_self_train, y_self_test = model_selection.train_test_split(x_self, y_self, test_size=0.1)
+
 
 ####################################
 # create model
@@ -59,6 +62,7 @@ def plot_R2(R2, epoches):
     ax.plot(np.array(range(epoches)), R2, '-')
     fig.show()
 
+
 ####################################
 # train model
 ####################################
@@ -78,6 +82,7 @@ def train(X, y, w):
     R2 = compute_r2(len(X), X, w, y)
     plot_line(X, y, X * w[1] + w[0], epoches, error, R2)
     plot_R2(R2_list, epoches)
+
 
 ####################################
 # test model
