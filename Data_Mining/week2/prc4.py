@@ -101,3 +101,8 @@ def test(X, y, w):
 
 train(x_self_train, y_self_train, w)
 test(x_self_test, y_self_test, w)
+
+
+####################################
+# test hyper-parameter
+####################################
