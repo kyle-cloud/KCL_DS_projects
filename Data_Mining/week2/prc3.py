@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = pd.read_csv('F:\OneDrive\Aclass\S2_Data_mining\week2\prac2-data\london-borough-profiles-jan2018.csv', encoding='ISO-8859-1')
+data = pd.read_csv('F:\OneDrive\Aclass\S2_Data_mining\week2\data\london-borough-profiles-jan2018.csv', encoding='ISO-8859-1')
 data.head()
 data = data.replace('.', 'NaN')
 x, y = data.iloc[:, 70].astype(float), data.iloc[:, 71].astype(float)

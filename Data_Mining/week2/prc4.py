@@ -8,7 +8,7 @@ from sklearn import datasets
 ####################################
 # Load Data
 ####################################
-data = pd.read_csv('F:\OneDrive\Aclass\S2_Data_mining\week2\prac2-data\london-borough-profiles-jan2018.csv', encoding='ISO-8859-1')
+data = pd.read_csv('F:\OneDrive\Aclass\S2_Data_mining\week2\data\london-borough-profiles-jan2018.csv', encoding='ISO-8859-1')
 data.head()
 data = data.replace('.', 'NaN')
 x, y = data.iloc[:, 70].astype(float), data.iloc[:, 71].astype(float)
@@ -38,12 +38,17 @@ def gradient_descent_2(M, X, w, y, alpha):
 
 def compute_error(M, X, w, y):
     error = 0
-    error = sum((y - X * w[1] + w[0]) ** 2)
-    error = error / M
+    for j in range(M):
+        y_hat = w[0] + w[1] * X[j]
+        error += (y[j] - y_hat) ** 2
+    error /= M
     return error
 
 def compute_r2(M, X, w, y):
-    u = sum((y - X * w[1] + w[0]) ** 2)
+    u = 0
+    for j in range(M):
+        y_hat = w[0] + w[1] * X[j]
+        u += (y[j] - y_hat) ** 2
     y_mean = sum(y) / M
     v = sum((y - y_mean) ** 2)
     R2 = 1 - u / v
@@ -57,31 +62,32 @@ def plot_line(X, y, y_hat, epoch, error, R2):
     ax.set_title('after %d iteration\terror = %.3lf\tR^2 = %.3lf' % (epoch, error, R2))
     fig.show()
 
-def plot_R2(R2, epoches):
+def plot_R2(R2):
     fig, ax = plt.subplots()
-    ax.plot(np.array(range(epoches)), R2, '-')
+    ax.plot(np.array(range(len(R2_list))), R2, '-')
     fig.show()
 
 
 ####################################
 # train model
 ####################################
-epoches = 10000
-alpha = 0.001
+epoches = 1000
+alpha = 0.01
 R2_list = []
 w = np.random.randn(2, 1)
 
 def train(X, y, w):
     for epoch in range(epoches):
+        w = gradient_descent_2(len(X), X, w, y, alpha)
         error = compute_error(len(X), X, w, y)
         R2 = compute_r2(len(X), X, w, y)
         R2_list.append(R2)
-        if epoch in [1000, 2000, 4000, 8000]: plot_line(X, y, X * w[1] + w[0], epoch, error, R2)
-        w = gradient_descent_2(len(X), X, w, y, alpha)
+        if epoch in [0, 1, 2, 3]: plot_line(X, y, X * w[1] + w[0], epoch, error, R2)
+        if error < 200: print('converged at %d' % epoch); break
     error = compute_error(len(X), X, w, y)
     R2 = compute_r2(len(X), X, w, y)
     plot_line(X, y, X * w[1] + w[0], epoches, error, R2)
-    plot_R2(R2_list, epoches)
+    plot_R2(R2_list)
 
 
 ####################################
@@ -104,5 +110,33 @@ test(x_self_test, y_self_test, w)
 
 
 ####################################
-# test all the hyper-parameter
+# test all the  hyper-parameter
 ####################################
+# alpha - w - p
+
+
+
+
+####################################
+# scikit-learn
+####################################
+from sklearn import linear_model
+from sklearn import metrics
+
+lr = linear_model.LinearRegression()
+lr.fit(x_self_train, y_self_train)
+print('sklearn regression equation: y = %f + %fx' % (lr.intercept_, lr.coef_[0]))
+
+y_hat = lr.predict(x_self_train)
+R2 = metrics.r2_score(y_self_train, y_hat)
+error = metrics.mean_squared_error(y_self_train, y_hat)
+print('R2 = %f' % R2)
+print('mean squared error = ' % error)
+plot_line(x_self_train, y_self_train, y_hat, 0, error, R2)
+
+y_hat = lr.predict(x_self_test)
+R2 = metrics.r2_score(y_self_test, y_hat)
+error = metrics.mean_squared_error(y_self_test, y_hat)
+print('R2 = %f' % R2)
+print('mean squared error = ' % error)
+plot_line(x_self_test, y_self_test, y_hat, 0, error, R2)
