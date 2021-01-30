@@ -12,6 +12,8 @@ ax.scatter(x_train[y_train == 0], x_train[y_train == 0], c='blue', marker='.', l
 ax.scatter(x_train[y_train == 1], x_train[y_train == 1], c='red', marker='+', label='train, class1')
 ax.scatter(x_test[y_test == 0], x_test[y_test == 0], c='blue', marker='>', label='test, class0')
 ax.scatter(x_test[y_test == 1], x_test[y_test == 1], c='red', marker='s', label='test, class1')
+ax.set_xlim(left=-3, right=3)
+ax.set_ylim(bottom=-3, top=3)
 ax.margins(0.5)
 ax.legend()
 fig.show()

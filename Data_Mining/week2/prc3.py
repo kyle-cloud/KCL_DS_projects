@@ -10,13 +10,13 @@ data.head()
 data = data.replace('.', 'NaN')
 x, y = data.iloc[:, 70].astype(float), data.iloc[:, 71].astype(float)
 
-plt.figure()
-plt.scatter(x, y)
-plt.margins(0.5)
-plt.title('raw data')
-plt.xlabel('age(men)')
-plt.ylabel('age(women)')
-plt.show()
+fig, ax = plt.subplots()
+ax.scatter(x, y)
+ax.margins(0.5)
+ax.set_title('raw data')
+ax.set_xlabel('age(men)')
+ax.set_ylabel('age(women)')
+fig.show()
 
 
 
