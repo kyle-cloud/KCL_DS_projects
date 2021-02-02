@@ -36,19 +36,22 @@ a = np.array([0.5, 0.5, -1.5, 2.5, -0.5])
 b = np.ones(len(y))
 
 # predict before learning
-prediction = np.matmul(y, a.T)
+y_origin = y * target.reshape((-1, 1))
+prediction = np.matmul(y_origin, a.T)
 prediction[prediction > 0] = 1
 prediction[prediction <= 0] = -1
+print(prediction)
 print(sum(prediction == target) / len(y))
 
 lr = 0.01
 
 for i in range(2):
     for j in range(len(y)):
-        a += lr * (b[j] - np.matmul(y[j], a.T)) * y[j]
+        a += lr * (b[j] - np.matmul(a, y[j].T)) * y[j]
 print(a)
 
-prediction = np.matmul(y, a.T)
+y_origin = y * target.reshape((-1, 1))
+prediction = np.matmul(y_origin, a.T)
 prediction[prediction > 0] = 1
 prediction[prediction <= 0] = -1
 print(prediction)
